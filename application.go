@@ -29,6 +29,13 @@ var (
 	ErrNoApplicationContainer = errors.New("you have not specified a docker container yet")
 )
 
+type Protocol string
+
+const (
+	ProtocolHTTP  Protocol = "HTTP"
+	ProtocolHTTPS Protocol = "HTTPS"
+)
+
 // Applications is a collection of applications
 type Applications struct {
 	Apps []Application `json:"apps"`
@@ -92,6 +99,7 @@ type Application struct {
 	LastTaskFailure       *LastTaskFailure     `json:"lastTaskFailure,omitempty"`
 	Fetch                 *[]Fetch             `json:"fetch,omitempty"`
 	IPAddressPerTask      *IPAddressPerTask    `json:"ipAddress,omitempty"`
+	ReadinessChecks       *[]ReadinessCheck    `json:"readinessChecks,omitempty"`
 }
 
 // ApplicationVersions is a collection of application versions for a specific app in marathon
@@ -140,6 +148,18 @@ type TaskStats struct {
 type Stats struct {
 	Counts   map[string]int     `json:"counts"`
 	LifeTime map[string]float64 `json:"lifeTime"`
+}
+
+// ReadinessCheck is a readiness check.
+type ReadinessCheck struct {
+	Name                    *string  `json:"name,omitempty"`
+	Protocol                Protocol `json:"protocol,omitempty"`
+	Path                    string   `json:"path,omitempty"`
+	PortName                string   `json:"portName,omitempty"`
+	IntervalSeconds         int      `json:"intervalSeconds,omitempty"`
+	TimeoutSeconds          int      `json:"timeoutSeconds,omitempty"`
+	HTTPStatusCodesForReady []int    `json:"httpStatusCodesForReady,omitempty"`
+	PreserveLastResponse    *bool    `json:"preserveLastResponse,omitempty"`
 }
 
 // SetIPAddressPerTask defines that the application will have a IP address defines by a external agent.

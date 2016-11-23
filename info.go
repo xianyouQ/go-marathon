@@ -43,6 +43,8 @@ type Info struct {
 		ReconciliationInitialDelay float64 `json:"reconciliation_initial_delay"`
 		ReconciliationInterval     float64 `json:"reconciliation_interval"`
 		TaskLaunchTimeout          float64 `json:"task_launch_timeout"`
+		//differen from github.com/gambol99/go-marathon
+		MesosLeaderUrl				   string  `json:"mesos_leader_ui_url"`
 	} `json:"marathon_config"`
 	Name            string `json:"name"`
 	Version         string `json:"version"`

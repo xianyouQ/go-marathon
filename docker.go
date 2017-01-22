@@ -258,6 +258,7 @@ func (docker *Docker) AddParameter(key string, value string) *Docker {
 	}
 
 	parameters := *docker.Parameters
+
 	parameters = append(parameters, Parameters{
 		Key:   key,
 		Value: value})
@@ -267,6 +268,26 @@ func (docker *Docker) AddParameter(key string, value string) *Docker {
 	return docker
 }
 
+// SetParameter change a parameter to the docker execution line when creating the container
+//		key:			the name of the option to add
+//		value:		the value of the option
+func (docker *Docker) SetParameter(key string, value string) *Docker {
+	if docker.Parameters == nil {
+		docker.EmptyParameters()
+	}
+	parameters := *docker.Parameters
+	for index,parameter := range parameters {
+		if parameter.Key == key {
+			parameters = append(parameters[:index],parameters[index+1:]...)
+		}
+	}
+	parameters = append(parameters, Parameters{
+			Key:   key,
+			Value: value})	
+	
+	docker.Parameters = &parameters
+	return docker
+}
 // EmptyParameters explicitly empties the parameters -- use this if you need to empty
 // parameters of an application that already has parameters set (setting parameters to nil will
 // keep the current value)

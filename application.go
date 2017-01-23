@@ -720,7 +720,17 @@ func (r *marathonClient) appExistAndRunning(name string) bool {
 	}
 	return false
 }
-
+// IsExistApplication test an application exist
+func (r *marathonClient)  IsExistApplication(name string) (bool,error) {
+	_, err := r.Application(name)
+	if apiErr, ok := err.(*APIError); ok && apiErr.ErrCode == ErrCodeNotFound {
+		return false,nil
+	} 
+	if err == nil {
+		return true,nil
+	}
+	return false,err
+}
 // DeleteApplication deletes an application from marathon
 // 		name: 		the id used to identify the application
 //		force:		used to force the delete operation in case of blocked deployment
